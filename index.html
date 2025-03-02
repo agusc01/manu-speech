@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leer Texto con Speech Synthesis</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: content-box;
+        color: white;
+        background-color: black;
+        margin: 0;
+        padding: 0;
+      }
+      .speech {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      .speech--form {
+        min-height: auto;
+      }
+      .speech--section-form {
+        min-height: auto;
+        flex-direction: row;
+      }
+      .speech__textarea {
+        height: 80vh;
+        width: 90vw;
+        border-radius: 1rem;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .speech__title {
+        margin-bottom: 0.5rem;
+        text-align: center;
+      }
+      .speech__element-form {
+        padding: 0.5rem 1rem;
+        margin-bottom: 0.5rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        border: 1px solid white;
+      }
+      .speech__button:hover {
+        color: black;
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="speech">
+      <h1 class="speech__title">Leer Texto con Speech Synthesis</h1>
+      <form class="speech speech--form">
+        <textarea
+          id="texto"
+          class="speech__textarea"
+          placeholder="Escribe algo aquí..."
+        ></textarea>
+        <section class="speech--section-form">
+          <select id="idioma" name="idioma" class="speech__element-form">
+            <option value="es-AR" selected>Español</option>
+            <option value="en-UK">Inglés</option>
+          </select>
+          <button
+            id="leer"
+            type="button"
+            class="speech__button speech__element-form"
+          >
+            Leer Texto
+          </button>
+        </section>
+      </form>
+    </main>
+
+    <script>
+      (() => {
+        const botonLeer = document.querySelector("#leer");
+        const selectorIdioma = document.querySelector("#idioma");
+
+        botonLeer.addEventListener("click", () => {
+          const textarea = document.getElementById("texto");
+          const texto = textarea.value.trim().replaceAll(".", "");
+
+          const utterance = new SpeechSynthesisUtterance(texto);
+          utterance.lang = selectorIdioma.value;
+
+          speechSynthesis.onvoiceschanged = function () {
+            const voces = speechSynthesis.getVoices();
+            const vozSeleccionada = voces.find(
+              (voz) => voz.lang === utterance.lang,
+            );
+            if (vozSeleccionada) {
+              utterance.voice = vozSeleccionada;
+            }
+            speechSynthesis.speak(utterance);
+          };
+
+          if (speechSynthesis.getVoices().length > 0) {
+            speechSynthesis.speak(utterance);
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
