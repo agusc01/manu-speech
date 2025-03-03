@@ -71,6 +71,7 @@
             <option value="es-AR" selected>Español</option>
             <option value="en-UK">Inglés (Reino Unido)</option>
             <option value="en-US">Inglés (Estados Unidos)</option>
+            <option value="cochino-degenerado">VER NOPOR</option>
           </select>
           <button
             id="leer"
@@ -96,6 +97,13 @@
         document.addEventListener("keydown", function (event) {
           if (event.ctrlKey && event.key === "Enter") {
             botonLeer.click();
+          }
+        });
+
+        selectorIdioma.addEventListener("change", () => {
+          if (selectorIdioma.value == "cochino-degenerado") {
+            document.querySelector("body").innerHTML =
+              '<iframe src="https://www.youtube-nocookie.com/embed/Q89JUzc0cZo?si=S_y0AK2kIYRpPUwf&autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="width:99vw;height:99vh;margin:0"></iframe>';
           }
         });
 
